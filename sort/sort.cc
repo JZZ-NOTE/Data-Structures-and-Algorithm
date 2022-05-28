@@ -67,8 +67,9 @@ void bobblesort(std::vector<int>& nums){
 //思路:将第n个数插入前面排好序的n-1个数。
 //     第一次遍历,插nums[1];第二次遍历,插nums[2];以此类推...
 //实现1:我自己想到的实现是先找到要插到哪里，再统一移动(insertionSort)
-//      但实际上这样并不会想选择排序的优化一样，可以减少数据的交换，反而多写了一遍循环
+//      但实际上这样并不会像选择排序的优化一样，可以减少数据的交换，反而多写了一遍循环
 //实现2:边比较边交换(insertionSort2),有点像冒泡，把小的往前冒
+//实现3:和实现2思路一样，写法上更加简单：在循环中，满足某个条件才进行循环，可以把条件写在循环体中
 void insertionSort(std::vector<int>& nums){
   if(nums.size()<2){
     return;
@@ -104,9 +105,21 @@ void insertionSort2(std::vector<int>& nums){
     }
   }
 }
+
+void insertionSort3(std::vector<int>& nums){
+  if(nums.size()<2){
+    return;
+  }
+  for(int i=1; i<nums.size(); ++i){
+    for(int j=i; j>0, nums[j]<nums[j-1]; --j){
+      swap(nums[j], nums[j-1]);
+    }
+  }
+}
+
 int main(){
   std::vector<int> nums{3, 2, 5, 4, 1};
-  insertionSort2(nums);
-  print("insert sort result: ",nums);
+  insertionSort3(nums);
+  print("insert sort3 result: ",nums);
   return 0;
 }
