@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <climits>
 
 void swap(int& a, int& b){
   int tmp;
@@ -372,6 +373,45 @@ void heapSort(std::vector<int>& nums){
 //桶排序：按照数据状况，把排序对象放入不同的容器中；计数排序是桶排序的一种。
 //基数排序：个位、十位、百位
 //应用一：给定一个数组，求如果排序之后，相邻两数的最大差值，要求时间复杂度O(N)，不能使用基于比较的排序。
+int bucket(int num, int len, int min, int max){
+  return (int)((num-min)*len/(max-min));
+}
+
+int maxGap(const std::vector<int>& nums){
+  if(nums.size()<=1){
+    return 0;
+  }
+  int min = INT_MAX;
+  int max = INT_MIN;
+  for(auto i:nums){
+    min = std::min(min, i);
+    max = std::max(max, i);
+  }
+  if(min == max){
+    return 0;
+  }
+  int len = nums.size();
+  std::vector<bool> hasNum(len+1, false);
+  std::vector<int> maxs(len+1);
+  std::vector<int> mins(len+1);
+  int bid = 0;
+  for(auto i:nums){
+    bid = bucket(i, len, min, max);
+    mins[bid] = hasNum[bid] ? std::min(mins[bid], i) : i;
+    maxs[bid] = hasNum[bid] ? std::max(maxs[bid], i) : i;
+    hasNum[bid] = true;
+  }
+  int res=0;
+  int lastMax = maxs[0];
+  int i = 1;
+  for(;i<=len;i++){
+    if(hasNum[i]){
+      res = std::max(res, mins[i] - lastMax);
+      lastMax = maxs[i];
+    }
+  }
+  return res;
+}
 
 
 int main(){
@@ -408,7 +448,12 @@ int main(){
   //print("quick sort result: ", nums);
 
   //堆排序
-  heapSort(nums);
-  print("heap sort result: ", nums);
+  //heapSort(nums);
+  //print("heap sort result: ", nums);
+
+  //maxGap
+  int max_gap = maxGap({1, 2, 4, 7, 11, 6});
+  std::cout << "max gap is: " << max_gap << std::endl;
+
   return 0;
 }
