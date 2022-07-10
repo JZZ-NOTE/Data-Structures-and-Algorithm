@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 /*暴力递归
 * 1.把问题转化为规模缩小了的同类问题的子问题
@@ -50,11 +51,24 @@ void func(int rest, int down, std::string from, std::string help, std::string to
 
 //举例三：打印一个字符串的全部子序列，包括空字符串
 
+//举例四：背包问题，正数数组中是否存在和为 aim 的组合
+bool isSum(const std::vector<int>& nums, int i, int sum, int aim){
+  if(i == nums.size()){
+    return sum == aim;
+  }
+  return isSum(nums, i+1, sum, aim) || isSum(nums, i+1, sum+nums[i], aim);
+}
+
 int main(){
   std::cout << "输入n: ";
   int n;
   std::cin >> n;
   std::cout << n << "的阶乘为: " << jiecheng0(n) << ", " << jiecheng(n) << std::endl;
+
+  std::cout << "是否和为 aim: ";
+  std::vector<int> nums{3, 2, 7, 13};
+  int aim = 9;
+  std::cout << isSum(nums, 0, 0, aim) << std::endl;
 }
 
 
