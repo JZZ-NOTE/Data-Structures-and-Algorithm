@@ -59,6 +59,46 @@ bool isSum(const std::vector<int>& nums, int i, int sum, int aim){
   return isSum(nums, i+1, sum, aim) || isSum(nums, i+1, sum+nums[i], aim);
 }
 
+///斐波那契数列 1 1 2 3 5 8 13 21... 从第3个数开始，F(n)=F(n-1)+F(n-2)
+//递归实现，时间复杂度 O(2^n) 时间复杂度可百度
+int FeiBoNaQi(int n){
+  if(n<3){
+    return 1;
+  }
+  return FeiBoNaQi(n-1)+FeiBoNaQi(n-2);
+}
+//动态规划实现，时间复杂度 O(n)
+int FeiBoNaQi2(int n){
+  if(n<3){
+    return 1;
+  }
+  std::vector<int> nums(n+1,0);
+  nums[1] = 1;
+  nums[2] = 1;
+  for(int i=3; i<=n; i++){
+    nums[i] = nums[i-1] + nums[i-2];
+  }
+  return nums[n];
+}
+//动态规划实现2，时间复杂度 O(n)，空间上不再维护数组，因为 F(n) 只与 F(n-1) 与 F(n-2) 有关，只需要记下这两个数
+int FeiBoNaQi3(int n){
+  if(n<3){
+    return 1;
+  }
+  int pre1 = 1; 
+  int pre2 = 1;
+  int res = 0;
+  for (int i=3; i<=n; i++){
+    res = pre1 + pre2;
+    pre2 = pre1;
+    pre1 = res;
+  }
+  return res;
+}
+
+///上台阶问题：上台阶，每次可上1阶或2阶，问上n阶有多少种方法。F(1)=1,F(2)=2,F(n)=F(n-1)+F(n-2)
+///母牛生小牛问题：初始有1只成熟母牛，第二年开始生小母牛，小母牛3年后成熟可生1只小母牛，问 n 年后有多少只母牛。1 2 3 4 6 9... F(n)=F(n-1)+F(n-3)
+
 int main(){
   std::cout << "输入n: ";
   int n;
@@ -69,6 +109,9 @@ int main(){
   std::vector<int> nums{3, 2, 7, 13};
   int aim = 9;
   std::cout << isSum(nums, 0, 0, aim) << std::endl;
+
+  std::cout << "输入n(第n个斐波那契数)：";
+  int num;
+  std::cin >> num;
+  std::cout << FeiBoNaQi(num) << " " << FeiBoNaQi2(num) << " " << FeiBoNaQi3(num) << std::endl;
 }
-
-
