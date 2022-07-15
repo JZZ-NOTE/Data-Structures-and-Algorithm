@@ -74,8 +74,7 @@ def insertion_sort(arr):
     for i in range(1, len(arr)):
         current_index = i
         while arr[current_index] < arr[current_index - 1] and (current_index - 1) >= 0:
-            arr[current_index - 1], arr[current_index] = arr[current_index], \
-                                                         arr[current_index - 1]
+            arr[current_index - 1], arr[current_index] = arr[current_index], arr[current_index - 1]
             current_index = current_index - 1
 
 
